@@ -7,7 +7,7 @@ todo need to fill this
 To find the most demanded skills for the top 3 most popular data roles. I filtered out those positions by which ones were the most popula, andgot the top 5 skills for these top 3 roles. this query highlights the most popular job titles and their top skills, showing which skills I shouldpay attention to depending on the role I'm targeting.
 
 View my notebook with detailed steps here:
-[2_Skill_Demand.ipynb](DA_Python_Data_Jobs_Project\2_Skills_Demand.ipynb)
+[Skill_Demand.ipynb](DA_Python_Data_Jobs_Project\2_Skills_Demand.ipynb)
 
 ### Visualize Data
 
@@ -39,7 +39,7 @@ plt.show()
 
 ### Results
 
-![1_Visualizations of Top SKills for Data Nerds](DA_Python_Data_Jobs_Project\images\skill_demand_all_data_roles.png)
+![1_Visualizations of Top SKills for Data Nerds](DA_Python_Data_Jobs_Project\images\2_skill_demand_all_data_roles.png)
 
 ### Insights
 
@@ -79,7 +79,7 @@ plt.show()
 
 ### Results
 
-![2_Trending Top Skills for Data Analysts in the US](DA_Python_Data_Jobs_Project\images\trending_top_skills_for_data_Analysts_in_the_US.png)
+![2_Trending Top Skills for Data Analysts in the US](DA_Python_Data_Jobs_Project\images\1_trending_top_skills_for_data_Analysts_in_the_US.png)
 
 _Bar graph visualizing the trending top skills for data analysts in the US in 2023._
 
@@ -171,3 +171,60 @@ _Two seperate bar graphs visualizing the highest paid skills and most in-demand 
 - The top graph shows specialized technical skills like `dplyr`, `Bitbucket`, and `Gitlab` are associated with higher salaries, some reaching up to $200K, suggesting that advanced technical proficiency can increase earning potential.
 - The bottom graph highlights that foundational skills like `Excel`, `Powerpoint`, and `SQL` are the most in-demand, even though they may not offer the highest salaries. This demonstrates the importance of these core skills for employability in data analysis roles.
 - There's a clear distinction between the skills that are highest paid and those that are most in-demand. Data Analysts aiming to maximize their career potential should consider developing a diverese skill set that includes both high-paying diverse skill set that includes both high-paying specialized skills and widely demanded foundational skills.
+
+# The Analysis
+
+## 5. What is the most optimal skill to learn for Data Analysts?
+
+#### Visualize Data
+
+```python
+
+from adjustText import adjust_text
+
+#df_plot.plot(kind='scatter', x='skill_percent', y='median_salary', figsize=(8,8))
+sns.set_theme(style='ticks')
+sns.scatterplot(
+  data=df_plot,
+  x='skill_percent',
+  y='median_salary',
+  hue='technology'
+)
+sns.despine()
+
+# created a empty list where we will append the texts list that we will use for adjust_Text function
+texts = []
+
+# Plotting with Matplotlib giving text
+for i, txt in enumerate(df_plot['skills']):
+  print(txt)
+  texts.append(plt.text(x=df_plot['skill_percent'].iloc[i], y=df_plot['median_salary'].iloc[i], s=txt))
+
+adjust_text(texts, arrowprops=dict(arrowstyle='->', color='gray', lw=1))
+from matplotlib.ticker import PercentFormatter
+# this is where we declare the ax=plt.gca()
+ax = plt.gca()
+ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda y, pos: f'${int(y/1000)}K'))
+ax.xaxis.set_major_formatter(PercentFormatter(decimals=0))
+
+plt.xlabel('Count of Job Postings')
+plt.ylabel('Percent of Data Analysts Jobs')
+plt.title('Most Optimal Skills for Data Analysts in the US', fontsize=15)
+
+plt.tight_layout()
+plt.show()
+
+```
+
+### Results
+
+![5_optimal_skills.png](DA_Python_Data_Jobs_Project\images\5_optimal_skills.png)
+
+_A scatter plot visualizing the most optimal skills (high paying & high demand) for data analysts in the US_
+
+#### Insights:
+
+- The scatter plot shows that most of the `programming` skills (colored blue) tend to cluster at higher salary levels compared to
+  other categories, indicating thgat programming expertise might offer greater salary benefits within the data analytics fileds.
+- Analyst tolls (colored green), including Tableau and Power BI, are prevalent in job postings and offer competitive salaries, showing that visualizations and data analysis software are crucial for current job roles. This category not only has good salaries but is also versatile across different types of data tasks.
+- The database skills (colored orange), such as Oracle and SQL Server, are associated with some of the highest salaries among data analyst tools. This indicates a significant demand and valuation for data management and manipulation expertise in the industry.
